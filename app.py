@@ -11,9 +11,14 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
-# directory of your app.py
+# __file__ special Python variable holding path of current script file (e.g. app.py)
+# os.path.dirname(__file__) gets the directory containing this script
+# os.path.abspath() converts that directory path to an absolute (full) path from root
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Build full path to SQLite database file located in 'data' 
 db_path = os.path.join(basedir, 'data', 'library.sqlite')
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 
 # Connect Flask app to flask-sqlalchemy code
