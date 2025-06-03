@@ -1,0 +1,132 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0 20px;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #add8e6;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+.controls form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.controls select,
+.controls input[type="text"],
+.controls button {
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.book-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 180px;
+    height: 100%;
+    min-height: 400px; /* Ensures consistent height */
+    padding: 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-card img.book-cover {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: auto;
+}
+
+.book-card h3, .book-card p {
+    margin: 0 0 5px 0;
+    text-align: center;
+}
+
+.delete-btn {
+    margin-top: auto;
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #a93226;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-container label {
+    font-weight: bold;
+}
+
+.form-container input[type="text"],
+.form-container input[type="number"],
+.form-container select {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-container button {
+    padding: 10px;
+    background-color: #2d89ef;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #1b66c9;
+}
+

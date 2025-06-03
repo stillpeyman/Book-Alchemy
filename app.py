@@ -11,6 +11,9 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
+API_KEY = os.getenv("API_KEY")
+HOST = "www.omdbapi.com"
+
 # __file__ special Python variable holding path of current script file (e.g. app.py)
 # os.path.dirname(__file__) gets the directory containing this script
 # os.path.abspath() converts that directory path to an absolute (full) path from root
@@ -23,61 +26,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 
 # Connect Flask app to flask-sqlalchemy code
 db.init_app(app)
-
-
-@app.route('/add_author', methods=['GET', 'POST'])
-def add_author():
-    # Handle POST request
-    if request.method == 'POST':
-        name = request.form.get('name')
-        birth_date = request.form.get('birthdate')
-        date_of_death = request.form.get('date_of_death')
-
-        new_author = Author(name=name, birth_date=birth_date, date_of_death=date_of_death)
-        db.session.add(new_author)
-        db.session.commit()
-
-        flash(f"Author '{name}' added successfully!")
-    
-    return render_template('add_author.html')
-
-
-@app.route('/add_book', methods=['GET', 'POST'])
-def add_book():
-    # Handle POST request
-    if request.method == 'POST':
-        isbn = request.form.get('isbn')
-        title = request.form.get('title')
-        publication_year = request.form.get('publication_year')
-        author_id = request.form.get('author_id')
-
-        new_book = Book(isbn=isbn, title=title, publication_year=publication_year, author_id=author_id)
-        db.session.add(new_book)
-        db.session.commit()
-
-        flash(f"Book '{title}' added successfully!")
-    
-    authors = Author.query.all()
-    return render_template('add_book.html', authors=authors)
-
-
-@app.route('/book/<int:book_id>/delete', methods=['POST'])
-def delete_book(book_id):
-    book = Book.query.get_or_404(book_id)
-    author = book.author
-
-    # Delete the book
-    db.session.delete(book)
-    db.session.commit()
-
-    # Check if author has any other books
-    other_books = Book.query.filter_by(author_id=author.id).count()
-    if other_books == 0:
-        db.session.delete(author)
-        db.session.commit()
-    
-    flash(f"Book '{book.title}' deleted successfully!")
-    return redirect(url_for('index'))
 
 
 @app.route('/')
@@ -102,6 +50,74 @@ def index():
 
     # Render template and pass books and current sort for dropdown
     return render_template('home.html', books=books, sort=sort, search=search_query)
+
+
+@app.route('/add_author', methods=['GET', 'POST'])
+def add_author():
+    # Handle POST request
+    if request.method == 'POST':
+        name = request.form.get('name')
+        birth_date = request.form.get('birthdate')
+        date_of_death = request.form.get('date_of_death')
+
+        # Check if author already exists
+        # first() fetches first result of query
+        existing_author = Author.query.filter_by(name=name).first()
+        if existing_author:
+            flash(f"Author '{name}' already exists.", 'error')
+
+        else:
+            new_author = Author(name=name, birth_date=birth_date, date_of_death=date_of_death)
+            db.session.add(new_author)
+            db.session.commit()
+
+            flash(f"Author '{name}' added successfully!")
+    
+    return render_template('add_author.html')
+
+
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    # Handle POST request
+    if request.method == 'POST':
+        isbn = request.form.get('isbn')
+        title = request.form.get('title')
+        publication_year = request.form.get('publication_year')
+        author_id = request.form.get('author_id')
+
+        # Check if a book with the same ISBN exists
+        existing_book = Book.query.filter_by(isbn=isbn).first()
+        if existing_book:
+            flash(f"A book with ISBN '{isbn}' already exists.", 'error')
+        
+        else:
+            new_book = Book(isbn=isbn, title=title, publication_year=publication_year, author_id=author_id)
+            db.session.add(new_book)
+            db.session.commit()
+
+        flash(f"Book '{title}' added successfully!")
+    
+    authors = Author.query.all()
+    return render_template('add_book.html', authors=authors)
+
+
+@app.route('/book/<int:book_id>/delete', methods=['POST'])
+def delete_book(book_id):
+    book = Book.query.get_or_404(book_id)
+    author = book.author
+
+    # Delete the book
+    db.session.delete(book)
+    db.session.commit()
+
+    # Check if author has any other books
+    other_books = Book.query.filter_by(author_id=author.id).count()
+    if other_books == 0:
+        db.session.delete(author)
+        db.session.commit()
+    
+    flash(f"Book '{book.title}' deleted successfully!")
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

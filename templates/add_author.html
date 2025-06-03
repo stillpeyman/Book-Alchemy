@@ -4,31 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body>
+      <nav>
+          <a href="{{ url_for('index') }}">Home</a> |
+          <a href="{{ url_for('add_book') }}">Add Book</a> |
+          <a href="{{ url_for('add_author') }}">Add Author</a>
+      </nav>
 
-    <!-- Flash messages appear here -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+      <div class="form-container">
+          <h2>Add New Author</h2>
+          <form method="POST" action="{{ url_for('add_author') }}">
+              <label for="name">Author Name:</label>
+              <input type="text" name="name" id="name" required>
 
-  <!-- The form -->
-  <form action="/add_author" method="POST">
-  <label for="name">Author Name:</label> 
-  <input type="text" id="name" name="name" required><br><br>
-  
-  <label for="birthdate">Birthdate:</label> 
-  <input type="date" id="birthdate" name="birthdate" required><br><br> 
-  <label for="date_of_death">Date of Death:</label> 
-  <input type="date" id="date_of_death" name="date_of_death"><br><br>
-  <input type="submit" value="Add Author"> 
-  </form>
-
+              <button type="submit">Add Author</button>
+          </form>
+      </div>
   </body>
-</html>
+  </html>
