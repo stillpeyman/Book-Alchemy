@@ -19,7 +19,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(), nullable=False)
     birth_date = db.Column(db.String)
-    date_of_death = db.Column(db.String)
+    death_date = db.Column(db.String)
 
     def __repr__(self):
         """
@@ -37,7 +37,7 @@ class Author(db.Model):
         Example:
             'George Orwell (1903-06-25 - 1950-01-21)'
         """
-        return f"{self.name} ({self.birth_date} - {self.date_of_death})"
+        return f"{self.name} ({self.birth_date} - {self.death_date})"
 
 
 class Book(db.Model):

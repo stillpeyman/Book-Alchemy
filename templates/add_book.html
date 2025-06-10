@@ -14,7 +14,18 @@
       </nav>
 
       <div class="form-container">
-          <h2>Add New Book</h2>
+        <h2>Add New Book</h2>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              <div class="flash-messages">
+              {% for message in messages %}
+                  <div class="flash-message">{{ message }}</div>
+              {% endfor %}
+              </div>
+          {% endif %}
+        {% endwith %}
+
           <form action="/add_book" method="POST">
               <label for="isbn">ISBN:</label>
               <input type="text" id="isbn" name="isbn" required><br><br>

@@ -14,15 +14,26 @@
           <a href="{{ url_for('add_author') }}">Add Author</a>
       </nav>
 
+      {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="flash-message">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
       <div class="controls">
           <form method="GET" action="{{ url_for('index') }}">
               <label for="sort">Sort by:</label>
               <select name="sort" id="sort">
-                  <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
-                  <option value="author" {% if sort_by == 'author' %}selected{% endif %}>Author</option>
+                  <option value="title" {% if sort == 'title' %}selected{% endif %}>Title</option>
+                  <option value="author" {% if sort == 'author' %}selected{% endif %}>Author</option>
               </select>
+                <button type="submit">Sort</button>
 
-              <input type="text" name="search" placeholder="Search by title..." value="{{ request.args.get('search', '') }}">
+              <input type="text" name="search" placeholder="Search by title..." value="{{ search_query }}">
               <button type="submit">Search</button>
           </form>
       </div>

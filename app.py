@@ -11,9 +11,6 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 
-API_KEY = os.getenv("API_KEY")
-HOST = "www.omdbapi.com"
-
 # __file__ special Python variable holding path of current script file (e.g. app.py)
 # os.path.dirname(__file__) gets the directory containing this script
 # os.path.abspath() converts that directory path to an absolute (full) path from root
@@ -57,8 +54,8 @@ def add_author():
     # Handle POST request
     if request.method == 'POST':
         name = request.form.get('name')
-        birth_date = request.form.get('birthdate')
-        date_of_death = request.form.get('date_of_death')
+        birth_date = request.form.get('birth_date')
+        death_date = request.form.get('death_date')
 
         # Check if author already exists
         # first() fetches first result of query
@@ -67,7 +64,7 @@ def add_author():
             flash(f"Author '{name}' already exists.", 'error')
 
         else:
-            new_author = Author(name=name, birth_date=birth_date, date_of_death=date_of_death)
+            new_author = Author(name=name, birth_date=birth_date, death_date=death_date)
             db.session.add(new_author)
             db.session.commit()
 
@@ -95,7 +92,7 @@ def add_book():
             db.session.add(new_book)
             db.session.commit()
 
-        flash(f"Book '{title}' added successfully!")
+            flash(f"Book '{title}' added successfully!")
     
     authors = Author.query.all()
     return render_template('add_book.html', authors=authors)
